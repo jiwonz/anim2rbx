@@ -1,0 +1,30 @@
+[package]
+name = "anim2rbx"
+version = "0.1.0"
+edition = "2024"
+description = "Convert animation files to Roblox KeyframeSequence format"
+license = "MIT"
+repository = "https://github.com/jiwonz/anim2rbx"
+authors = ["jiwonz <me@jiwonz.com>"]
+readme = "README.md"
+keywords = ["roblox", "animation", "converter", "assimp"]
+
+[[bin]]
+name = "anim2rbx"
+path = "src/cli/main.rs"
+
+[lib]
+name = "anim2rbx"
+path = "src/lib.rs"
+
+[dependencies]
+rbx_binary = "1.0.0"
+rbx_dom_weak = "3.0.0"
+russimp = { version = "3.2.1", features = ["prebuilt"] }
+ordered-float = "5.0.0"
+rbx_types = "2.0.0"
+glam = "0.30.4"
+clap = { version = "4.5", features = ["derive"] }
+anyhow = "1.0"
+log = "0.4"
+env_logger = "0.11"
