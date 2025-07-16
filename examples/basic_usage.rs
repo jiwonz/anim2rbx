@@ -8,8 +8,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Example 1: Default settings using Default trait
     let converter_default = AnimationConverter::default();
-    println!("Default converter: filter={}, epsilon={}",
-             converter_default.filter_identical_bones, converter_default.epsilon);
+    println!(
+        "Default converter: filter={}, epsilon={}",
+        converter_default.filter_identical_bones, converter_default.epsilon
+    );
 
     // Example 2: Custom settings using new()
     let converter_custom = AnimationConverter::new(true, 1e-5);

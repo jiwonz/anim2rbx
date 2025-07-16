@@ -9,7 +9,7 @@ use rbx_dom_weak::{InstanceBuilder, WeakDom};
 use rbx_types::{CFrame, EnumItem, Matrix3, Ref, Variant, Vector3};
 use russimp::scene::Scene;
 
-use crate::types::{NodeInfo, Keyframe, Pose};
+use crate::types::{Keyframe, NodeInfo, Pose};
 use crate::utils::approx_equal_cframe;
 
 /// Internal structure for efficiently looking up animation data
@@ -20,7 +20,10 @@ struct ChannelData {
 }
 
 /// Extract keyframes from an Assimp scene
-pub fn extract_keyframes_from_scene(scene: &Scene, bone_infos: &HashMap<String, NodeInfo>) -> Vec<Keyframe> {
+pub fn extract_keyframes_from_scene(
+    scene: &Scene,
+    bone_infos: &HashMap<String, NodeInfo>,
+) -> Vec<Keyframe> {
     let mut keyframes = Vec::new();
     let mut channels_data = Vec::new();
     let mut all_times = BTreeSet::new();
@@ -222,7 +225,10 @@ pub fn filter_identical_bone_poses(keyframes: &mut Vec<Keyframe>, epsilon: f32) 
 }
 
 /// Create a Roblox WeakDom KeyframeSequence from keyframes
-pub fn create_keyframe_sequence_dom(keyframes: &[Keyframe], bone_infos: &HashMap<String, NodeInfo>) -> WeakDom {
+pub fn create_keyframe_sequence_dom(
+    keyframes: &[Keyframe],
+    bone_infos: &HashMap<String, NodeInfo>,
+) -> WeakDom {
     // Create the WeakDom with KeyframeSequence and actual Keyframe instances
     let mut kfs = WeakDom::new(InstanceBuilder::new("KeyframeSequence").with_properties([(
         "Priority",

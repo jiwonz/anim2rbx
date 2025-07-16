@@ -57,7 +57,7 @@ fn test_keyframe_creation() {
                 x: Vector3::new(1.0, 0.0, 0.0),
                 y: Vector3::new(0.0, 1.0, 0.0),
                 z: Vector3::new(0.0, 0.0, 1.0),
-            }
+            },
         ),
     };
 
@@ -141,7 +141,10 @@ fn test_keyframe_sorting_and_validation() {
 
     // Test that poses have valid data
     for keyframe in &keyframes {
-        assert!(!keyframe.poses.is_empty(), "Keyframe should have at least one pose");
+        assert!(
+            !keyframe.poses.is_empty(),
+            "Keyframe should have at least one pose"
+        );
         for pose in &keyframe.poses {
             assert!(!pose.name.is_empty(), "Pose name should not be empty");
             // Validate that position components are finite
@@ -217,10 +220,7 @@ fn test_multiple_poses_per_keyframe() {
         },
     ];
 
-    let keyframe = Keyframe {
-        time: 0.0,
-        poses,
-    };
+    let keyframe = Keyframe { time: 0.0, poses };
 
     assert_eq!(keyframe.poses.len(), 3);
     assert_eq!(keyframe.poses[0].name, "LeftArm");
@@ -228,9 +228,7 @@ fn test_multiple_poses_per_keyframe() {
     assert_eq!(keyframe.poses[2].name, "Head");
 
     // Verify unique bone names
-    let bone_names: HashSet<_> = keyframe.poses.iter()
-        .map(|p| &p.name)
-        .collect();
+    let bone_names: HashSet<_> = keyframe.poses.iter().map(|p| &p.name).collect();
     assert_eq!(bone_names.len(), 3, "All bone names should be unique");
 }
 
@@ -240,20 +238,44 @@ fn test_bone_info_hierarchy() {
 
     let root_bone = NodeInfo {
         rest_transform: russimp::Matrix4x4 {
-            a1: 1.0, a2: 0.0, a3: 0.0, a4: 0.0,
-            b1: 0.0, b2: 1.0, b3: 0.0, b4: 0.0,
-            c1: 0.0, c2: 0.0, c3: 1.0, c4: 0.0,
-            d1: 0.0, d2: 0.0, d3: 0.0, d4: 1.0,
+            a1: 1.0,
+            a2: 0.0,
+            a3: 0.0,
+            a4: 0.0,
+            b1: 0.0,
+            b2: 1.0,
+            b3: 0.0,
+            b4: 0.0,
+            c1: 0.0,
+            c2: 0.0,
+            c3: 1.0,
+            c4: 0.0,
+            d1: 0.0,
+            d2: 0.0,
+            d3: 0.0,
+            d4: 1.0,
         },
         parent: None,
     };
 
     let child_bone = NodeInfo {
         rest_transform: russimp::Matrix4x4 {
-            a1: 1.0, a2: 0.0, a3: 0.0, a4: 1.0, // Translated by 1 unit in X
-            b1: 0.0, b2: 1.0, b3: 0.0, b4: 0.0,
-            c1: 0.0, c2: 0.0, c3: 1.0, c4: 0.0,
-            d1: 0.0, d2: 0.0, d3: 0.0, d4: 1.0,
+            a1: 1.0,
+            a2: 0.0,
+            a3: 0.0,
+            a4: 1.0, // Translated by 1 unit in X
+            b1: 0.0,
+            b2: 1.0,
+            b3: 0.0,
+            b4: 0.0,
+            c1: 0.0,
+            c2: 0.0,
+            c3: 1.0,
+            c4: 0.0,
+            d1: 0.0,
+            d2: 0.0,
+            d3: 0.0,
+            d4: 1.0,
         },
         parent: Some("RootBone".to_string()),
     };
@@ -298,11 +320,7 @@ fn test_floating_point_precision() {
     use rbx_types::{CFrame, Matrix3, Vector3};
 
     // Test with high precision floating point values
-    let precise_position = Vector3::new(
-        1.23456789012345,
-        -9.87654321098765,
-        0.000000123456789
-    );
+    let precise_position = Vector3::new(1.23456789012345, -9.87654321098765, 0.000000123456789);
 
     let identity_matrix = Matrix3 {
         x: Vector3::new(1.0, 0.0, 0.0),
@@ -336,9 +354,15 @@ fn test_api_consistency() {
         .with_epsilon(1e-5);
 
     // All should have identical settings
-    assert_eq!(default_converter.filter_identical_bones, param_converter.filter_identical_bones);
+    assert_eq!(
+        default_converter.filter_identical_bones,
+        param_converter.filter_identical_bones
+    );
     assert_eq!(default_converter.epsilon, param_converter.epsilon);
-    assert_eq!(param_converter.filter_identical_bones, builder_converter.filter_identical_bones);
+    assert_eq!(
+        param_converter.filter_identical_bones,
+        builder_converter.filter_identical_bones
+    );
     assert_eq!(param_converter.epsilon, builder_converter.epsilon);
 }
 
@@ -398,7 +422,7 @@ mod utils_tests {
                 x: Vector3::new(1.0, 0.0, 0.0),
                 y: Vector3::new(0.0, 1.0, 0.0),
                 z: Vector3::new(0.0, 0.0, 1.0),
-            }
+            },
         );
 
         let cframe2 = CFrame::new(
@@ -407,11 +431,15 @@ mod utils_tests {
                 x: Vector3::new(1.0001, 0.0001, 0.0001),
                 y: Vector3::new(0.0001, 1.0001, 0.0001),
                 z: Vector3::new(0.0001, 0.0001, 1.0001),
-            }
+            },
         );
 
-        assert!(anim2rbx::utils::approx_equal_cframe(&cframe1, &cframe2, 0.001));
-        assert!(!anim2rbx::utils::approx_equal_cframe(&cframe1, &cframe2, 0.00001));
+        assert!(anim2rbx::utils::approx_equal_cframe(
+            &cframe1, &cframe2, 0.001
+        ));
+        assert!(!anim2rbx::utils::approx_equal_cframe(
+            &cframe1, &cframe2, 0.00001
+        ));
     }
 
     #[test]

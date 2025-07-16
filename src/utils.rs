@@ -20,7 +20,11 @@ pub fn get_bone_infos(scene: &Scene) -> HashMap<String, NodeInfo> {
         }
     }
 
-    debug!("Found {} animated channels: {:?}", animated_channels.len(), animated_channels);
+    debug!(
+        "Found {} animated channels: {:?}",
+        animated_channels.len(),
+        animated_channels
+    );
 
     if let Some(root) = &scene.root {
         collect_node_bone_infos(root, None, &mut bone_infos, &animated_channels);
@@ -51,7 +55,11 @@ fn collect_node_bone_infos(
     }
 
     // Recursively collect children, passing current node as parent only if it's a bone
-    let next_parent = if is_bone { Some(node.name.clone()) } else { parent };
+    let next_parent = if is_bone {
+        Some(node.name.clone())
+    } else {
+        parent
+    };
     for child in node.children.borrow().iter() {
         collect_node_bone_infos(child, next_parent.clone(), transforms, animated_channels);
     }

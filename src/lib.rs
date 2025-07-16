@@ -14,12 +14,12 @@ use anyhow::Result;
 use rbx_dom_weak::WeakDom;
 use russimp::scene::Scene;
 
-pub mod types;
 pub mod converter;
+pub mod types;
 pub mod utils;
 
-pub use types::*;
 pub use converter::*;
+pub use types::*;
 
 /// Main library API for converting animation files to KeyframeSequence
 pub struct AnimationConverter {
@@ -78,7 +78,11 @@ impl AnimationConverter {
     }
 
     /// Convert keyframes to a Roblox WeakDom KeyframeSequence
-    pub fn keyframes_to_weakdom(&self, keyframes: &[Keyframe], bone_infos: &HashMap<String, NodeInfo>) -> WeakDom {
+    pub fn keyframes_to_weakdom(
+        &self,
+        keyframes: &[Keyframe],
+        bone_infos: &HashMap<String, NodeInfo>,
+    ) -> WeakDom {
         converter::create_keyframe_sequence_dom(keyframes, bone_infos)
     }
 
@@ -90,7 +94,11 @@ impl AnimationConverter {
         Ok(self.keyframes_to_weakdom(&keyframes, &bone_infos))
     }
 
-    fn extract_keyframes(&self, scene: &Scene, bone_infos: &HashMap<String, NodeInfo>) -> Vec<Keyframe> {
+    fn extract_keyframes(
+        &self,
+        scene: &Scene,
+        bone_infos: &HashMap<String, NodeInfo>,
+    ) -> Vec<Keyframe> {
         converter::extract_keyframes_from_scene(scene, bone_infos)
     }
 
