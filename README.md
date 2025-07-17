@@ -28,6 +28,11 @@ let kfs_dom = converter.convert_file_to_weakdom("animation.fbx")?;
 cargo install anim2rbx
 ```
 
+### via rokit
+```bash
+rokit add jiwonz/anim2rbx
+```
+
 ## Supported Formats
 
 Supports [many formats](https://github.com/assimp/assimp/blob/master/doc/Fileformats.md) via Assimp including:

@@ -18,6 +18,11 @@ name = "anim2rbx"
 path = "src/lib.rs"
 
 [patch.crates-io]
+# Use a fork of russimp-sys that allows setting the ASSIMP_DIR environment variable
+# This is necessary for temporary fixing an issue with russimp-sys not finding the Assimp library
+# when using the static-link feature.
+# The fork is available at https://github.com/jiwonz/russimp-sys
+# The issue is discussed in https://github.com/jkvargas/russimp-sys/issues/45
 russimp-sys = { git = "https://github.com/jiwonz/russimp-sys.git", branch = "assimp-dir-env-var" }
 
 [dependencies]
