@@ -17,10 +17,13 @@ path = "src/cli/main.rs"
 name = "anim2rbx"
 path = "src/lib.rs"
 
+[patch.crates-io]
+russimp-sys = { git = "https://github.com/jiwonz/russimp-sys.git", branch = "assimp-dir-env-var" }
+
 [dependencies]
 rbx_binary = "1.0.0"
 rbx_dom_weak = "3.0.0"
-russimp = { version = "3.2.1", features = ["prebuilt"] }
+russimp = { version = "3.2.1", features = ["static-link"] }
 ordered-float = "5.0.0"
 rbx_types = "2.0.0"
 glam = "0.30.4"

@@ -22,7 +22,7 @@ struct ChannelData {
 /// Extract keyframes from an Assimp scene
 pub fn extract_keyframes_from_scene(
     scene: &Scene,
-    bone_infos: &HashMap<String, NodeInfo>,
+    node_infos: &HashMap<String, NodeInfo>,
 ) -> Vec<Keyframe> {
     let mut keyframes = Vec::new();
     let mut channels_data = Vec::new();
@@ -89,8 +89,8 @@ pub fn extract_keyframes_from_scene(
                 .position_map
                 .get(&time_ordered)
                 .and_then(|value| {
-                    if let Some(bone_info) = bone_infos.get(&channel_data.name) {
-                        let rest_transform = bone_info.rest_transform;
+                    if let Some(node_info) = node_infos.get(&channel_data.name) {
+                        let rest_transform = node_info.rest_transform;
                         let rest_pos = Vec3 {
                             x: rest_transform.a4,
                             y: rest_transform.b4,
@@ -111,7 +111,20 @@ pub fn extract_keyframes_from_scene(
             let rot = channel_data
                 .rotation_map
                 .get(&time_ordered)
-                .map(|value| Quat::from_xyzw(value.x, value.y, value.z, value.w))
+                .and_then(|value| {
+                    if let Some(node_info) = node_infos.get(&channel_data.name) {
+                        let rest_transform = node_info.rest_transform;
+                        let rest_rot = Quat::from_mat3(&Mat3::from_cols(
+                            Vec3 { x: rest_transform.a1, y: rest_transform.b1, z: rest_transform.c1 },
+                            Vec3 { x: rest_transform.a2, y: rest_transform.b2, z: rest_transform.c2 },
+                            Vec3 { x: rest_transform.a3, y: rest_transform.b3, z: rest_transform.c3 },
+                        ));
+                        let relative_rot = rest_rot.inverse() * Quat::from_xyzw(value.x, value.y, value.z, value.w);
+                        Some(relative_rot)
+                    } else {
+                        None
+                    }
+                })
                 .unwrap_or(Quat::IDENTITY);
 
             // Convert to CFrame
