@@ -81,6 +81,13 @@ jobs:
         with:
           ref: ${{ inputs.release_ref }}
 
+      - name: Fetch assimp source for static linking
+        shell: bash
+        run: |
+          ASSIMP_DIR="${RUNNER_TEMP}/assimp"
+          git clone --branch v6.0.2 --depth 1 https://github.com/assimp/assimp.git "$ASSIMP_DIR"
+          echo "ASSIMP_DIR=$ASSIMP_DIR" >> $GITHUB_ENV
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
