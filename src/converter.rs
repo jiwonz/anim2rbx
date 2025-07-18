@@ -115,11 +115,24 @@ pub fn extract_keyframes_from_scene(
                     if let Some(node_info) = node_infos.get(&channel_data.name) {
                         let rest_transform = node_info.rest_transform;
                         let rest_rot = Quat::from_mat3(&Mat3::from_cols(
-                            Vec3 { x: rest_transform.a1, y: rest_transform.b1, z: rest_transform.c1 },
-                            Vec3 { x: rest_transform.a2, y: rest_transform.b2, z: rest_transform.c2 },
-                            Vec3 { x: rest_transform.a3, y: rest_transform.b3, z: rest_transform.c3 },
+                            Vec3 {
+                                x: rest_transform.a1,
+                                y: rest_transform.b1,
+                                z: rest_transform.c1,
+                            },
+                            Vec3 {
+                                x: rest_transform.a2,
+                                y: rest_transform.b2,
+                                z: rest_transform.c2,
+                            },
+                            Vec3 {
+                                x: rest_transform.a3,
+                                y: rest_transform.b3,
+                                z: rest_transform.c3,
+                            },
                         ));
-                        let relative_rot = rest_rot.inverse() * Quat::from_xyzw(value.x, value.y, value.z, value.w);
+                        let relative_rot = rest_rot.inverse()
+                            * Quat::from_xyzw(value.x, value.y, value.z, value.w);
                         Some(relative_rot)
                     } else {
                         None
